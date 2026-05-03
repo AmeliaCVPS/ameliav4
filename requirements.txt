@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pydantic
+cryptography
+scikit-learn
+pandas
+numpy
+joblib
+psycopg2-binary
+python-dotenv
+torch
+transformers
+accelerate
+tqdm

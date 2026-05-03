@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.M.E.L.I.A — Triagem Inteligente</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <!-- animations.js nao sera carregado pois cursor custom foi removido -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════════════════════ -->
+<header class="site-header">
+    <div class="header-inner">
+        <a class="brand brand-mark" href="#" onclick="showScreen('welcome');return false" data-magnetic=".25">
+            <img src="AmeliaCVPS.png" alt="AMELIA" class="brand-logo" id="logo-img">
+            <span class="brand-name">A.M.E.L.I.A</span>
+        </a>
+        <nav class="nav" id="nav-buttons" role="navigation" aria-label="Principal">
+            <button class="btn btn-ghost" onclick="showScreen('login')"    data-magnetic=".3">Entrar</button>
+            <button class="btn btn-solid" onclick="showScreen('cadastro')" data-magnetic=".3">Cadastrar</button>
+        </nav>
+    </div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     CONTEUDO PRINCIPAL
+══════════════════════════════════════════════════════════════ -->
+<main>
+
+    <!-- ──────────────────────────────────────────────────────
+         TELA INICIAL
+    ─────────────────────────────────────────────────────────── -->
+    <section id="screen-welcome" class="screen active">
+        <div class="hero" data-tilt="3">
+
+            <!-- Esquerda: copy -->
+            <div class="hero__content">
+
+                <p class="hero__eyebrow" data-stagger>
+                    <span class="eyebrow-dot" aria-hidden="true"></span>
+                    Protocolo de Manchester · IA · LGPD
+                </p>
+
+                <h1 class="hero__heading" aria-label="Triagem medica inteligente">
+                    <span class="hero__line">Triagem</span>
+                    <span class="hero__line hero__line--outline">medica</span>
+                    <span class="hero__line"><em>inteligente</em></span>
+                </h1>
+
+                <p class="hero__body" data-stagger>
+                    Classificacao automatica de risco por voz ou texto,
+                    com modelo Random Forest de <strong>97,7% de acuracia</strong>.
+                    Protocolo clinico real. Resultado em segundos.
+                </p>
+
+                <div class="hero__actions" data-stagger>
+                    <button class="btn btn-solid btn-xl" onclick="showScreen('cadastro')" data-magnetic=".35">
+                        Comecar agora
+                    </button>
+                    <button class="btn btn-ghost btn-xl" onclick="showScreen('login')" data-magnetic=".35">
+                        Ja tenho conta
+                    </button>
+                </div>
+
+                <button class="btn btn-link" onclick="showScreen('sobre')" data-stagger>
+                    Sobre o projeto
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Direita: orbs clinicos -->
+            <div class="hero__visual" aria-hidden="true">
+                <div class="orb-stack" data-stagger-group>
+
+                    <div class="orb orb--red" data-stagger data-tilt="5">
+                        <span class="orb__label">Emergencia</span>
+                        <span class="orb__sub">Atendimento imediato</span>
+                    </div>
+
+                    <div class="orb orb--orange" data-stagger data-tilt="5">
+                        <span class="orb__label">Urgente</span>
+                        <span class="orb__sub">Ate 10 minutos - U001</span>
+                    </div>
+
+                    <div class="orb orb--yellow" data-stagger data-tilt="5">
+                        <span class="orb__label">Moderado</span>
+                        <span class="orb__sub">Ate 30 minutos - M001</span>
+                    </div>
+
+                    <div class="orb orb--green" data-stagger data-tilt="5">
+                        <span class="orb__label">Leve</span>
+                        <span class="orb__sub">Ate 2 horas - L001</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ──────────────────────────────────────────────────────
+         CADASTRO
+    ─────────────────────────────────────────────────────────── -->
+    <section id="screen-cadastro" class="screen">
+        <div class="panel" data-tilt="2">
+            <div class="panel__head">
+                <div class="panel__icon" aria-hidden="true">
+                    <img src="AmeliaCVPS.png" alt="" style="height:2.2rem;width:auto;display:inline-block;" onerror="this.style.display='none';this.nextSibling.style.display='inline'"><span style="display:none;font-size:1.8rem;">📋</span>
+                </div>
+                <h2 class="panel__title">Criar conta</h2>
+                <p class="panel__sub">Seus dados ficam protegidos por criptografia AES-128.</p>
+            </div>
+
+            <form id="form-cadastro" class="form" onsubmit="handleCadastro(event)" novalidate>
+                <div class="field" data-stagger>
+                    <label for="cad-nome">Nome completo</label>
+                    <input id="cad-nome" type="text" required placeholder="Maria da Silva" autocomplete="name">
+                </div>
+
+                <div class="field-row" data-stagger-group>
+                    <div class="field" data-stagger>
+                        <label for="cad-cpf">CPF</label>
+                        <input id="cad-cpf" type="text" required placeholder="000.000.000-00" maxlength="14" autocomplete="off">
+                    </div>
+                    <div class="field" data-stagger>
+                        <label for="cad-nascimento">Nascimento</label>
+                        <input id="cad-nascimento" type="date" required autocomplete="bday">
+                    </div>
+                </div>
+
+                <div class="field-row" data-stagger-group>
+                    <div class="field" data-stagger>
+                        <label for="cad-sus">Cartao SUS</label>
+                        <input id="cad-sus" type="text" required placeholder="000 0000 0000 0000" maxlength="19" autocomplete="off">
+                    </div>
+                    <div class="field" data-stagger>
+                        <label for="cad-sexo">Sexo biologico</label>
+                        <select id="cad-sexo" required>
+                            <option value="">Selecione</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field" data-stagger>
+                    <label for="cad-telefone">Telefone <span class="field__opt">(opcional)</span></label>
+                    <input id="cad-telefone" type="tel" placeholder="(11) 99999-9999" maxlength="15" autocomplete="tel">
+                </div>
+
+                <div class="field-row" data-stagger-group>
+                    <div class="field" data-stagger>
+                        <label for="cad-senha">Senha</label>
+                        <div class="field-input-wrap">
+                            <input id="cad-senha" type="password" required placeholder="Min. 6 caracteres" minlength="6" autocomplete="new-password">
+                            <button type="button" class="btn-toggle-pwd" onclick="_togglePwd('cad-senha', this)" aria-label="Mostrar senha" title="Mostrar senha">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="field" data-stagger>
+                        <label for="cad-senha-confirm">Confirmar senha</label>
+                        <div class="field-input-wrap">
+                            <input id="cad-senha-confirm" type="password" required placeholder="Repita a senha" minlength="6" autocomplete="new-password">
+                            <button type="button" class="btn-toggle-pwd" onclick="_togglePwd('cad-senha-confirm', this)" aria-label="Mostrar confirmacao" title="Mostrar confirmacao">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form__actions" data-stagger>
+                    <button type="submit" class="btn btn-solid btn-lg" data-magnetic=".3">Criar conta</button>
+                    <button type="button" class="btn btn-ghost" onclick="showScreen('welcome')" data-magnetic=".2">Voltar</button>
+                </div>
+            </form>
+
+            <p class="panel__footer">
+                Ja tem conta? <a href="#" onclick="showScreen('login');return false">Entrar</a>
+            </p>
+        </div>
+    </section>
+
+
+    <!-- ──────────────────────────────────────────────────────
+         LOGIN
+    ─────────────────────────────────────────────────────────── -->
+    <section id="screen-login" class="screen">
+        <div class="panel panel--narrow" data-tilt="2">
+            <div class="panel__head">
+                <div class="panel__icon" aria-hidden="true">
+                    <img src="AmeliaCVPS.png" alt="" style="height:2.2rem;width:auto;display:inline-block;" onerror="this.style.display='none';this.nextSibling.style.display='inline'"><span style="display:none;font-size:1.8rem;">🔐</span>
+                </div>
+                <h2 class="panel__title">Entrar</h2>
+                <p class="panel__sub">Use seu CPF ou Cartao SUS para acessar a triagem.</p>
+            </div>
+
+            <form id="form-login" class="form" onsubmit="handleLogin(event)" novalidate>
+
+                <!-- Campo CPF com mascara automatica 000.000.000-00 -->
+                <div class="field" data-stagger>
+                    <label for="login-id">CPF</label>
+                    <div class="field-input-wrap">
+                        <input
+                            id="login-id"
+                            type="text"
+                            inputmode="numeric"
+                            required
+                            placeholder="000.000.000-00"
+                            maxlength="14"
+                            autocomplete="username"
+                            aria-label="CPF — formato 000.000.000-00"
+                        >
+                    </div>
+                </div>
+
+                <!-- Campo Senha com botao toggle mostrar/esconder -->
+                <div class="field" data-stagger>
+                    <label for="login-senha">Senha</label>
+                    <div class="field-input-wrap">
+                        <input
+                            id="login-senha"
+                            type="password"
+                            required
+                            placeholder="Digite sua senha"
+                            minlength="6"
+                            autocomplete="current-password"
+                            aria-label="Senha de acesso"
+                        >
+                        <button
+                            type="button"
+                            class="btn-toggle-pwd"
+                            id="btn-toggle-login-pwd"
+                            onclick="_togglePwd('login-senha', this)"
+                            aria-label="Mostrar ou esconder senha"
+                            title="Mostrar senha"
+                        >
+                            <!-- Icone olho (SVG inline — sem dependencia externa) -->
+                            <svg id="icon-eye-login" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form__actions" data-stagger>
+                    <button type="submit" class="btn btn-solid btn-lg">Entrar</button>
+                    <button type="button" class="btn btn-ghost" onclick="showScreen('welcome')">Voltar</button>
+                </div>
+            </form>
+
+            <p class="panel__footer">
+                Sem conta? <a href="#" onclick="showScreen('cadastro');return false">Cadastre-se</a>
+            </p>
+        </div>
+    </section>
+
+
+    <!-- ──────────────────────────────────────────────────────
+         PAINEL DE TRIAGEM
+    ─────────────────────────────────────────────────────────── -->
+    <section id="screen-painel" class="screen">
+        <div class="chat-wrap">
+
+            <!-- Cabecalho do chat -->
+            <header class="chat-head" role="banner">
+                <div class="chat-avatar-wrap" aria-hidden="true">
+                    <div class="chat-avatar">
+                        <img src="AmeliaCVPS.png" alt="AMELIA" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-weight:800;color:#2b78e4;font-size:.85rem;\'>A</span>'">
+                    </div>
+                    <span class="pulse-ring"></span>
+                </div>
+                <div class="chat-head-info">
+                    <strong>A.M.E.L.I.A</strong>
+                    <span id="api-status">Assistente de Triagem</span>
+                </div>
+                <span id="api-indicator" class="api-dot" title="Status da API" aria-label="Status da API">...</span>
+            </header>
+
+            <!-- Mensagens -->
+            <div id="chat-messages" class="chat-msgs" role="log" aria-live="polite" aria-label="Conversa de triagem"></div>
+
+            <!-- Input -->
+            <div id="chat-input-area" class="chat-bar" role="form" aria-label="Enviar resposta">
+                <label for="chat-input" class="sr-only">Sua resposta</label>
+                <input
+                    id="chat-input"
+                    type="text"
+                    placeholder="Digite sua resposta ou clique no microfone..."
+                    disabled
+                    autocomplete="off"
+                    aria-label="Campo de resposta"
+                >
+                <button
+                    id="btn-voice"
+                    class="btn-mic"
+                    onclick="toggleRecording()"
+                    title="Clique para falar"
+                    aria-label="Iniciar gravacao de voz"
+                    data-magnetic=".4"
+                >Mic</button>
+                <button
+                    id="chat-send"
+                    class="btn btn-solid btn-sm"
+                    onclick="sendMessage()"
+                    disabled
+                    data-magnetic=".3"
+                >Enviar</button>
+            </div>
+
+            <!-- Feedback de voz -->
+            <div id="voice-feedback" class="voice-fb" role="status" aria-live="polite"></div>
+
+            <!-- Acoes pos-triagem -->
+            <div id="chat-actions" class="chat-done" style="display:none" role="group" aria-label="Acoes pos-triagem">
+                <button class="btn btn-solid btn-lg" onclick="generatePDF()" data-magnetic=".3">
+                    Baixar Prontuario PDF
+                </button>
+                <button class="btn btn-ghost" onclick="resetChat()" data-magnetic=".2">
+                    Nova Triagem
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ──────────────────────────────────────────────────────
+         SOBRE
+    ─────────────────────────────────────────────────────────── -->
+    <section id="screen-sobre" class="screen">
+        <div class="about" data-tilt="2">
+
+            <div class="about__logo-wrap" aria-hidden="true">
+                <img src="AmeliaCVPS.png" alt="Logo AMELIA - Colegio Visconde de Porto Seguro" class="about__logo">
+            </div>
+
+            <h2 class="about__title">Sobre a A.M.E.L.I.A</h2>
+            <p class="about__tag">Tecnologia a favor da vida</p>
+
+            <p class="about__body">
+                A AMELIA utiliza <strong>Inteligencia Artificial</strong> para triagem medica
+                automatizada baseada no <strong>Protocolo de Manchester</strong>. O modelo
+                Random Forest, treinado com mais de 1.600 casos clinicos, atinge
+                <strong>97,7% de acuracia</strong> na classificacao de risco,
+                garantindo agilidade, precisao e conformidade com a LGPD.
+            </p>
+
+            <div class="about__stats" data-stagger-group>
+                <div class="stat" data-stagger data-tilt="4">
+                    <span>97.7%</span>
+                    <small>Acuracia do modelo</small>
+                </div>
+                <div class="stat" data-stagger data-tilt="4">
+                    <span>500</span>
+                    <small>Arvores de decisao</small>
+                </div>
+                <div class="stat" data-stagger data-tilt="4">
+                    <span>12</span>
+                    <small>Features clinicas</small>
+                </div>
+                <div class="stat" data-stagger data-tilt="4">
+                    <span>AES-128</span>
+                    <small>Criptografia</small>
+                </div>
+            </div>
+
+            <div class="about__team">
+                <h4>Equipe</h4>
+                <div class="team-grid" data-stagger-group>
+                    <div class="team-card" data-stagger>Marcelo de Oliveira</div>
+                    <div class="team-card" data-stagger>Marcos Pires</div>
+                    <div class="team-card" data-stagger>Thiago Nascimento</div>
+                    <div class="team-card" data-stagger>Daniel Oliveira</div>
+                </div>
+            </div>
+
+            <div class="about__meta">
+                <p><strong>Professor:</strong> Anderson Borges</p>
+                <p><strong>Instituicao:</strong> Colegio Visconde de Porto Seguro</p>
+                <p><strong>Ano:</strong> 2025 — FeNaDANTE</p>
+                <p><strong>Curso:</strong> Robotica e IA — 2a serie EM</p>
+            </div>
+
+            <button class="btn btn-solid btn-lg" onclick="showScreen('welcome')" data-magnetic=".3">
+                Voltar ao inicio
+            </button>
+
+        </div>
+    </section>
+
+</main>
+
+
+<!-- Toast -->
+<div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+
+<!-- SR only -->
+<style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style>
+
+<!-- animations.js removido: cursor custom eliminado (cursor nativo restaurado) -->
+<!-- Stagger e tilt continuam funcionando via MutationObserver no script.js se necessario -->
+<script>
+/* ─── TOGGLE DE SENHA ─────────────────────────────────────────────
+   Funcao global chamada pelo botao de toggle em campos de senha.
+   Alterna entre type="password" e type="text" e troca o icone. */
+function _togglePwd(inputId, btn) {
+    var inp = document.getElementById(inputId);
+    if (!inp) return;
+    var isHidden = inp.type === 'password';
+    inp.type = isHidden ? 'text' : 'password';
+    btn.title = isHidden ? 'Esconder senha' : 'Mostrar senha';
+    btn.setAttribute('aria-label', isHidden ? 'Esconder senha' : 'Mostrar senha');
+    // Troca o icone SVG: olho aberto vs olho riscado
+    var eyeOpen = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    var eyeOff  = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>' +
+                  '<path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>' +
+                  '<line x1="1" y1="1" x2="23" y2="23"/>';
+    var svg = btn.querySelector('svg');
+    if (svg) svg.innerHTML = isHidden ? eyeOff : eyeOpen;
+}
+
+/* ─── MASCARA CPF NO LOGIN ────────────────────────────────────────
+   Aplica formatacao 000.000.000-00 em tempo real no campo de CPF do login.
+   Usa apenas digitos — ignora qualquer outro caractere. */
+document.addEventListener('DOMContentLoaded', function() {
+    var loginCpf = document.getElementById('login-id');
+    if (loginCpf) {
+        loginCpf.addEventListener('input', function(e) {
+            var v = e.target.value.replace(/\D/g, '').slice(0, 11);
+            v = v.replace(/(\d{3})(\d)/, '$1.$2')
+                 .replace(/(\d{3})(\d)/, '$1.$2')
+                 .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = v;
+        });
+    }
+
+    /* Stagger manual — animations.js foi removido mas queremos manter
+       a animacao de entrada dos campos de formulario */
+    var staggerGroups = document.querySelectorAll('[data-stagger-group]');
+    var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (!entry.isIntersecting) return;
+            var children = entry.target.querySelectorAll('[data-stagger]');
+            children.forEach(function(child, i) {
+                child.style.transitionDelay = (i * 60) + 'ms';
+                child.classList.add('is-visible');
+            });
+            io.unobserve(entry.target);
+        });
+    }, { threshold: 0.05 });
+    staggerGroups.forEach(function(g) { io.observe(g); });
+
+    /* Marca campos de stagger soltos (fora de grupo) como visiveis */
+    setTimeout(function() {
+        var loose = document.querySelectorAll('.screen.active [data-stagger]');
+        loose.forEach(function(el, i) {
+            el.style.transitionDelay = (i * 55) + 'ms';
+            el.classList.add('is-visible');
+        });
+    }, 80);
+});
+</script>
+<script src="voice.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
